@@ -25,8 +25,9 @@ public class SimpleService {
                 "\nNumber of service created: "+ numberServiceCreated;
     }
 
-    @Init
-    public void initService(){
-
+    @Init(suppressException = true)
+    public void initService() throws Exception {
+        System.out.println("Init simple 2");
+        throw new Exception();
     }
 }
