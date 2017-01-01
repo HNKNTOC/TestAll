@@ -1,6 +1,8 @@
-import javax.swing.*;
+import goods.Camera;
+import goods.Container;
+import goods.Product;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,10 +12,54 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        test2();
+        test4();
+    }
+
+    private static void test4() {
+        ArrayList<Camera> cameras = new ArrayList<>();
+        cameras.add(new Camera("Camera 1"));
+        cameras.add(new Camera("Camera 2"));
+        cameras.add(new Camera("Camera 3"));
+        cameras.add(new Camera("Camera 4"));
+        System.out.println(findOnlyOneType(cameras, new Camera("Camera 2")));
+        //findOnlyOneType(cameras,new Product("Camera 2")); FAILED!!!
+        System.out.println(findTwoType(cameras, new Camera("Camera 3")));
+        System.out.println(findTwoType(cameras, new Product("Sugar")));
+    }
+
+    static <T extends Product> boolean findOnlyOneType(List<T> all, T p) {
+        for (Product product : all) {
+            if(product.compareTo(p) < 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static <T extends Product> boolean findTwoType(List<? extends Product> all, T p) {
+        for (Product product : all) {
+            if(product.compareTo(p) == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void test3() {
+        ArrayList<Camera> cameras = new ArrayList<>();
+        cameras.add(new Camera("Camera 1"));
+        cameras.add(new Camera("Camera 2"));
+        cameras.add(new Camera("Camera 3"));
+        cameras.add(new Camera("Camera 4"));
+
+        Container<Camera> container = new Container<Camera>();
+        boolean out = container.find(cameras, new Camera("Camera 7"));
+        System.out.println(out);
     }
 
     private static void test2() {
+        //SomeType<?> - OK
+        //SomeType - Failed use test method two.
         SomeType<?> someType = new SomeType();
         List<String> list = Collections.singletonList("Value");
         someType.test(list);
