@@ -2,36 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>Test</artifactId>
+        <groupId>MyProject</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>MyProject</groupId>
-    <artifactId>Test</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>Annotations</module>
-        <module>Generics</module>
-        <module>Concurrency</module>
-    </modules>
+    <artifactId>Concurrency</artifactId>
+
+    <description>
+        This test project for learning Java Concurrency.
+    </description>
 
     <properties>
 
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.9</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
@@ -51,6 +39,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
