@@ -1,5 +1,6 @@
 import goods.Camera;
 import goods.Container;
+import goods.Phone;
 import goods.Product;
 
 import java.util.ArrayList;
@@ -12,7 +13,18 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        test4();
+        test5();
+    }
+
+    private static void test5() {
+        Camera camera = new Camera("Camera 1");
+        Camera camera2 = new Camera("Camera 2");
+        Phone phone = new Phone("Phone 1");
+
+        camera.setPrice(100);
+        camera2.setPrice(200);
+
+        System.out.println(camera.compareTo(camera2));
     }
 
     private static void test4() {
@@ -23,20 +35,9 @@ public class Main {
         cameras.add(new Camera("Camera 4"));
         System.out.println(findOnlyOneType(cameras, new Camera("Camera 2")));
         //findOnlyOneType(cameras,new Product("Camera 2")); FAILED!!!
-        System.out.println(findTwoType(cameras, new Camera("Camera 3")));
-        System.out.println(findTwoType(cameras, new Product("Sugar")));
     }
 
-    static <T extends Product> boolean findOnlyOneType(List<T> all, T p) {
-        for (Product product : all) {
-            if(product.compareTo(p) < 0){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static <T extends Product> boolean findTwoType(List<? extends Product> all, T p) {
+    static <T extends Product<T>> boolean findOnlyOneType(List<T> all, T p) {
         for (Product product : all) {
             if(product.compareTo(p) == 0){
                 return true;

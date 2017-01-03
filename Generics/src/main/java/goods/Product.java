@@ -4,7 +4,7 @@ package goods;
  * TODO: Add doc
  * Created by Nikita on 02.01.2017.
  */
-public class Product implements Comparable<Product> {
+public abstract class Product<T extends Product<T>> implements Comparable<T> {
     private String name;
     private int price;
 
@@ -28,8 +28,11 @@ public class Product implements Comparable<Product> {
         this.price = price;
     }
 
+    abstract boolean subCompareTo(T p);
+
     @Override
-    public int compareTo(Product o) {
-        return name.compareTo(o.getName());
+    public int compareTo(T product) {
+        if(!subCompareTo(product)) return -1;
+        return price - product.getPrice();
     }
 }
