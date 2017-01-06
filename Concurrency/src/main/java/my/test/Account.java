@@ -1,5 +1,6 @@
 package my.test;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -10,6 +11,7 @@ public class Account{
     private int balance;
     private Lock lock = new ReentrantLock();
     private final String name;
+    private AtomicInteger failedCounter = new AtomicInteger();
 
     public Account(int initBalance, String name){
         this.balance = initBalance;
@@ -32,12 +34,22 @@ public class Account{
 
     @Override
     public String toString() {
-        return "my.test.Account{" +
+        return "Account{" +
                 "balance=" + balance +
+                ", name='" + name + '\'' +
+                ", failedCounter=" + failedCounter +
                 '}';
     }
 
     public Lock getLock() {
         return lock;
+    }
+
+    public void incFailedTransferCount() {
+        failedCounter.incrementAndGet();
+    }
+
+    public String getName() {
+        return name;
     }
 }

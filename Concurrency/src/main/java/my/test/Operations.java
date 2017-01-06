@@ -8,46 +8,59 @@ import java.util.concurrent.TimeUnit;
  */
 public class Operations {
     public static void main(String[] args) throws InsufficientFundsException, InterruptedException {
-        final Account a = new Account(10, "acc1");
-        final Account b = new Account(5, "acc2");
+        final Account acc1 = new Account(20, "acc1");
+        final Account acc2 = new Account(15, "acc2");
 
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    transfer(a,b,2);
+                    transfer(acc1, acc2, 5);
                 } catch (InsufficientFundsException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        thread.start();
 
-        transfer(b,a,1);
+        transfer(acc2, acc1, 10);
 
-        System.out.println(a);
-        System.out.println(b);
+        thread.join(1);
+        System.out.println(acc1);
+        System.out.println(acc2);
     }
 
     private static void transfer(Account acc1, Account acc2, int amount) throws InsufficientFundsException, InterruptedException {
         System.out.println("Transfer start.");
-        if(acc1.getBalance() < amount) throw new InsufficientFundsException();
+        if (acc1.getBalance() < amount) throw new InsufficientFundsException();
 
-            if(acc1.getLock().tryLock(1, TimeUnit.SECONDS)){
-                try {
-                    if(acc2.getLock().tryLock(1, TimeUnit.SECONDS)){
-                        try {
-                            acc1.withdraw(amount);
-                            acc2.deposit(amount);
-                        } finally {
-                            acc2.getLock().unlock();
-                        }
+        if (acc1.getLock().tryLock(1, TimeUnit.SECONDS)) {
+            System.out.println("Lock "+acc1.getName());
+            Thread.sleep(100);
+            try {
+                if (acc2.getLock().tryLock(1, TimeUnit.SECONDS)) {
+                    System.out.println("Lock "+acc2.getName());
+                    try {
+                        acc1.withdraw(amount);
+                        acc2.deposit(amount);
+                    } finally {
+                        acc2.getLock().unlock();
+                        System.out.println("Unlock "+acc2.getName());
                     }
-                }finally {
-                    acc1.getLock().unlock();
+                }else {
+                    System.out.println("Failed lock "+acc2.getName());
+                    acc2.incFailedTransferCount();
                 }
+            } finally {
+                acc1.getLock().unlock();
+                System.out.println("Unlock "+acc1.getName());
             }
+        }else {
+            System.out.println("Failed lock "+acc1.getName());
+            acc1.incFailedTransferCount();
+        }
         System.out.println("Transfer stop.");
     }
 }
