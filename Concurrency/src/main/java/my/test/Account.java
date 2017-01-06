@@ -1,14 +1,19 @@
 package my.test;
 
-/**
- * TODO: Add doc
- * Created by Nikita on 03.01.2017.
- */
-public class Account {
-    private int balance;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-    public Account(int initBalance){
+/**
+ * Performs operation with balance.
+ */
+public class Account{
+    private int balance;
+    private Lock lock = new ReentrantLock();
+    private final String name;
+
+    public Account(int initBalance, String name){
         this.balance = initBalance;
+        this.name = name;
     }
 
     public int getBalance() {
@@ -16,10 +21,12 @@ public class Account {
     }
 
     public void withdraw(int amount){
+        System.out.println(name+": -"+amount);
         balance-=amount;
     }
 
     public void deposit(int amount){
+        System.out.println(name+": +"+amount);
         balance+=amount;
     }
 
@@ -28,5 +35,9 @@ public class Account {
         return "my.test.Account{" +
                 "balance=" + balance +
                 '}';
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }
