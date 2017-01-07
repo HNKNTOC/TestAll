@@ -1,5 +1,9 @@
 package my.test;
 
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -8,59 +12,35 @@ import java.util.concurrent.TimeUnit;
  */
 public class Operations {
     public static void main(String[] args) throws InsufficientFundsException, InterruptedException {
-        final Account acc1 = new Account(20, "acc1");
-        final Account acc2 = new Account(15, "acc2");
+        final Account acc1 = new Account(100, "acc1");
+        final Account acc2 = new Account(0, "acc2");
 
-        Thread thread = new Thread(new Runnable() {
+        Runnable runnable = new Runnable() {
+
             @Override
             public void run() {
-                try {
-                    transfer(acc1, acc2, 5);
-                } catch (InsufficientFundsException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                System.out.println("=====INFORMATION=====");
+                System.out.println(acc1);
+                System.out.println(acc2);
+                System.out.println("====================");
             }
-        });
-        thread.start();
+        };
 
-        transfer(acc2, acc1, 10);
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
 
-        thread.join(1);
+        service.schedule(runnable,1,TimeUnit.SECONDS);
+
+        for (int i = 0; i < 10; i++) {
+            service.submit(
+                    new Transfer(acc1,acc2,10)
+            );
+        }
+
+        service.shutdown();
+
+        service.awaitTermination(5,TimeUnit.SECONDS);
+
         System.out.println(acc1);
         System.out.println(acc2);
-    }
-
-    private static void transfer(Account acc1, Account acc2, int amount) throws InsufficientFundsException, InterruptedException {
-        System.out.println("Transfer start.");
-        if (acc1.getBalance() < amount) throw new InsufficientFundsException();
-
-        if (acc1.getLock().tryLock(1, TimeUnit.SECONDS)) {
-            System.out.println("Lock "+acc1.getName());
-            Thread.sleep(100);
-            try {
-                if (acc2.getLock().tryLock(1, TimeUnit.SECONDS)) {
-                    System.out.println("Lock "+acc2.getName());
-                    try {
-                        acc1.withdraw(amount);
-                        acc2.deposit(amount);
-                    } finally {
-                        acc2.getLock().unlock();
-                        System.out.println("Unlock "+acc2.getName());
-                    }
-                }else {
-                    System.out.println("Failed lock "+acc2.getName());
-                    acc2.incFailedTransferCount();
-                }
-            } finally {
-                acc1.getLock().unlock();
-                System.out.println("Unlock "+acc1.getName());
-            }
-        }else {
-            System.out.println("Failed lock "+acc1.getName());
-            acc1.incFailedTransferCount();
-        }
-        System.out.println("Transfer stop.");
     }
 }

@@ -4,7 +4,7 @@ package my.test;
  * TODO: Add doc
  * Created by Nikita on 03.01.2017.
  */
-public class InsufficientFundsException extends Throwable {
+public class InsufficientFundsException extends Exception {
     public InsufficientFundsException() {
     }
 
