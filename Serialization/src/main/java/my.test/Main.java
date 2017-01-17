@@ -2,6 +2,7 @@ package my.test;
 
 import my.test.data.DataObject;
 import my.test.serialization.BytesSerialization;
+import my.test.serialization.JSONSerialization;
 import my.test.serialization.Serialization;
 import my.test.serialization.XMLSerialization;
 
@@ -15,6 +16,7 @@ public class Main {
     public static void main(String[] args) {
         goSerialization(new XMLSerialization(),"MyObject.xml");
         goSerialization(new BytesSerialization(),"MyObject.bin");
+        goSerialization(new JSONSerialization(),"MyObject.json");
     }
 
 
