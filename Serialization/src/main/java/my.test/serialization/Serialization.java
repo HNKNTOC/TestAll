@@ -1,4 +1,4 @@
-package my.test;
+package my.test.serialization;
 
 import java.io.File;
 
@@ -13,14 +13,14 @@ public abstract class Serialization {
         this.type = type;
     }
 
-    void write(Object obj,File file){
+    public void write(Object obj, File file){
         System.out.println("====== Write in "+ type +" File:"+file.getName()+" ======");
         goWrite(obj,file);
         System.out.println("File write: "+file.length()+" bytes.");
         System.out.println("==================");
     }
 
-    Object reade(File file){
+    public Object reade(File file){
         System.out.println("====== Reade of "+ type +" File:"+file.getName()+" ======");
         Object obj = goReade(file);
         System.out.println("==================");

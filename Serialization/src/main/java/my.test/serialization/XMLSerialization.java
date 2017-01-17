@@ -1,6 +1,5 @@
-package my.test;
+package my.test.serialization;
 
-import com.sun.xml.internal.ws.util.Pool;
 import my.test.data.CustomObject;
 import my.test.data.DataObject;
 
@@ -22,7 +21,7 @@ public class XMLSerialization extends Serialization {
 
     private static JAXBContext CONTEXT;
 
-    XMLSerialization() {
+    public XMLSerialization() {
         super("XML");
         try {
             CONTEXT = JAXBContext.newInstance(CLASSES);

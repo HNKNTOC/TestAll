@@ -1,4 +1,4 @@
-package my.test;
+package my.test.serialization;
 
 import my.test.data.DataObject;
 

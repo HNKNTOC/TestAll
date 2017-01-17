@@ -1,6 +1,9 @@
 package my.test;
 
 import my.test.data.DataObject;
+import my.test.serialization.BytesSerialization;
+import my.test.serialization.Serialization;
+import my.test.serialization.XMLSerialization;
 
 import java.io.File;
 
