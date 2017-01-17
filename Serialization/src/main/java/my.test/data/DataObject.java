@@ -1,27 +1,65 @@
-package my.test;
+package my.test.data;
 
+import javax.xml.bind.annotation.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
- * TODO: Add doc
- * Created by Nikita on 14.01.2017.
+ * Example for serialization.
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "dataObject")
 public class DataObject extends NonSerializable implements Serializable {
+    @XmlAttribute
     private int number = 55;
+    @XmlElement(name = "string")
     private String string = "My test string.";
-    private transient String[] strings = {
+
+    @XmlElementWrapper(name = "strings")
+    @XmlElement(name = "string")
+    private String[] strings = {
             "String 1",
             "String 2",
             "String 3"
     };
+    @XmlElement
     private CustomObject customObject = new CustomObject();
+    @XmlElement
+    @XmlElementWrapper(name = "elementCustomObject")
+    private List<CustomObject> customObjects = new ArrayList<>();
 
     public DataObject() {
         System.out.println("Create DataObject.");
+        customObjects.add(new CustomObject());
+        customObjects.add(new CustomObject(true));
+        customObjects.add(new CustomObject());
+        customObjects.add(new CustomObject(true));
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public CustomObject getCustomObject() {
+        return customObject;
+    }
+
+    public String[] getStrings() {
+        return strings;
+    }
+
+    public List<CustomObject> getCustomObjects() {
+        return customObjects;
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {

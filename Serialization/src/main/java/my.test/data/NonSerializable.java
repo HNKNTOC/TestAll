@@ -1,4 +1,4 @@
-package my.test;
+package my.test.data;
 
 /**
  * TODO: Add doc
@@ -7,7 +7,7 @@ package my.test;
 public class NonSerializable {
     private String myData = "";
 
-    public String getMyData() {
+    String getMyData() {
         return myData;
     }
 
@@ -15,7 +15,7 @@ public class NonSerializable {
         this.myData = myData;
     }
 
-    public NonSerializable() {
+    NonSerializable() {
         System.out.println("Create NonSerializable.");
     }
 }
